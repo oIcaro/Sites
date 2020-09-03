@@ -1,0 +1,670 @@
+<html>
+    <head>
+        <title>Compre Aqui!</title>
+        
+          <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        
+        <script type="text/javascript">
+        
+          var valorTotal = 0;
+          var entrega = 0;
+          var subTotal = 0;
+          var subFormat = 0;
+          var subTotal2 = 0;
+          var subFormat2 = 0;
+          var somaFinal = 0;
+
+  function salvar() {
+      document.getElementById("txtNomeCliente").value = document.getElementById("txtNome").value;
+      document.getElementById("txtCpfResult").value = document.getElementById("txtCpf").value;
+      document.getElementById("txtEmailResult").value = document.getElementById("txtEmail").value;
+
+      
+      var indice = document.formVenda2.slcFormaPagto.selectedIndex;
+
+      if(indice==0){
+        document.getElementById("txtPagamentoSelec").value = "Boleto";
+      }
+      else if(indice==1){
+        document.getElementById("txtPagamentoSelec").value = "Tranfêrencia Bancária";
+      }
+      else if(indice==2){
+        document.getElementById("txtPagamentoSelec").value = "Cartão de Crédito";
+      }
+
+      var indice2 = document.formVenda2.slcParcelas.selectedIndex;
+      document.getElementById("txtQuantidadeParcelas").value = document.formVenda2.slcParcelas.value
+
+      if(document.getElementById("slcFormaPagto").value == 3){
+        var valorParcela = subTotal2/document.formVenda2.slcParcelas.value
+        document.getElementById("txtPagamentoParcela").value = valorParcela
+      }
+      else if((document.getElementById("slcFormaPagto").value != 3 && document.formVenda2.slcParcelas.value > 1)){
+        alert("Desculpe, com essa forma de pagamento só é possível parcelar em 1 vez")
+        document.getElementById("txtPagamentoParcela").value = subFormat2
+        document.getElementById("txtQuantidadeParcelas").value = 1
+      }
+
+      else if((document.getElementById("slcFormaPagto").value != 3 && document.formVenda2.slcParcelas.value == 1)){
+        document.getElementById("txtPagamentoParcela").value = subFormat2
+      }
+
+  }
+
+  function fMasc(objeto, mascara) {
+      obj = objeto
+      masc = mascara
+      setTimeout("fMascEx()", 1)
+    }
+    function fMascEx() {
+      obj.value = masc(obj.value)
+    }
+
+    function mCPF(txtCpf) {
+      txtCpf = txtCpf.replace(/\D/g, "")
+      txtCpf = txtCpf.replace(/(\d{3})(\d)/, "$1.$2")
+      txtCpf = txtCpf.replace(/(\d{3})(\d)/, "$1.$2")
+      txtCpf = txtCpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+      return txtCpf
+    }
+
+
+  function finalizar() {
+    alert("Compra concluida com sucesso!!")
+  }
+
+  function cancelar(){
+    alert("Compra cancelada com sucesso!")
+    location.reload();
+  }
+
+  function addProduto() {
+
+    var i;
+      for(i=0;i<document.formVenda.rdEntrega.length;i++) {
+          if(document.formVenda.rdEntrega[i].checked)
+          break
+      }
+      if (parseInt(document.formVenda.rdEntrega[i].value)== 1){
+          entrega = document.getElementById('txtDespesas').value = parseInt('7,00');
+          entregaFormat = entrega.toFixed(2);
+          document.getElementById("txtEntregaSelec").value = "Correio"
+      }
+      else if (parseInt(document.formVenda.rdEntrega[i].value) == 2){
+          entrega = document.getElementById('txtDespesas').value = parseInt('15,00');
+          entregaFormat = entrega.toFixed(2);
+          document.getElementById("txtEntregaSelec").value = "SEDEX"
+      }
+      else if (parseInt(document.formVenda.rdEntrega[i].value) == 3){
+          entrega = document.getElementById('txtDespesas').value = parseInt('0,00');
+          entregaFormat = entrega.toFixed(2);
+          document.getElementById("txtEntregaSelec").value = "Retirar na hora."
+      }
+
+      var tabela = document.getElementById("tbProduto");
+
+      var td1 = document.createElement("td");
+      var td2 = document.createElement("td");
+      var td3 = document.createElement("td");
+      var td4 = document.createElement("td");
+      var td5 = document.createElement("td");
+
+      var tr = document.createElement("tr");
+
+      var cod = parseInt(document.getElementById("codLivro").value);
+
+      switch(cod) {
+          case 1:
+              var cod = "1";
+              var descricao = "HP: Relíquias da Morte";
+              var preco = "32,45 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*32.45);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*32.45);
+              subFormat = subTotal.toFixed(2);
+              break;
+              
+              case 2:
+              var cod = "2";
+              var descricao = "A Arte da Guerra";
+              var preco = "R$ 43,70";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*43.70);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*43.70);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 3:
+              var cod = "3";
+              var descricao = "O Exorcista";
+              var preco = "59,90 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*59.90);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*59.90);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 4:
+              var cod = "4";
+              var descricao = "Deadpool Massacra o MCU";
+              var preco = "89,99 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*89.99);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*89.99);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 5:
+              var cod = "5";
+              var descricao = "Secret Wars";
+              var preco = "115,73 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*115.73);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*115.73);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 6:
+              var cod = "6";
+              var descricao = "O Quarteto Fantástico";
+              var preco = "103,90 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*103.90);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*103.90);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 7:
+              var cod = "7";
+              var descricao = "Carrie, A Estranha";
+              var preco = "32,45 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*32.45);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*32.45);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 8:
+              var cod = "8";
+              var descricao = "O Iluminado";
+              var preco = "45,73 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*45.73);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*45.73);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 9:
+                  var cod = "9";
+                  var descricao = "It: A Coisa";
+                  var preco = "73,90 R$";
+                  var qtde = document.getElementById("numQuantidadeLivro").value;
+                  subTotal2 +=(parseInt(qtde)*73.90);
+                  subFormat2 = subTotal2.toFixed(2);
+                  subTotal =(parseInt(qtde)*73.90);
+                  subFormat = subTotal.toFixed(2);
+                  break;
+
+              case 10:
+                  var cod = "10";
+                  var descricao = "O Estrangeiro";
+                  var preco = "29,93 R$";
+                  var qtde = document.getElementById("numQuantidadeLivro").value;
+                  subTotal2 +=(parseInt(qtde)*29.93);
+                  subFormat2 = subTotal2.toFixed(2);
+                  subTotal =(parseInt(qtde)*29.93);
+                  subFormat = subTotal.toFixed(2);
+                  break;
+
+              case 11:
+                  var cod = "11";
+                  var descricao = "A Odisséia";
+                  var preco = "21,60 R$";
+                  var qtde = document.getElementById("numQuantidadeLivro").value;
+                  subTotal2 +=(parseInt(qtde)*21.60);
+                  subFormat2 = subTotal2.toFixed(2);
+                  subTotal =(parseInt(qtde)*21.60);
+                  subFormat = subTotal.toFixed(2);
+                  break;
+
+              case 12:
+                  var cod = "12";
+                  var descricao = "A Metamorfose";
+                  var preco = "39,90 R$";
+                  var qtde = document.getElementById("numQuantidadeLivro").value;
+                  subTotal2 +=(parseInt(qtde)*39.90);
+                  subFormat2 = subTotal2.toFixed(2);
+                  subTotal =(parseInt(qtde)*39.90);
+                  subFormat = subTotal.toFixed(2);
+                  break;
+
+              case 13:
+              var cod = "13";
+              var descricao = "Yakusoku no Nerverland";
+              var preco = "15,90 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*15.90);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*15.90);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 14:
+              var cod = "14";
+              var descricao = "Shingeki No Kyojin";
+              var preco = "19,80 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*19.80);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*19.80);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 15:
+              var cod = "15";
+              var descricao = "Boku no Hero";
+              var preco = "13,36 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*13.36);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*13.36);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 16:
+              var cod = "16";
+              var descricao = "Solo Leveling";
+              var preco = "26,32 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*26.32);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*26.32);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 17:
+              var cod = "17";
+              var descricao = "I Am The Sorcerer King";
+              var preco = "21,93 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*21.93);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*21.93);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+              case 18:
+              var cod = "18";
+              var descricao = "Player Reborn";
+              var preco = "10,44 R$";
+              var qtde = document.getElementById("numQuantidadeLivro").value;
+              subTotal2 +=(parseInt(qtde)*10.44);
+              subFormat2 = subTotal2.toFixed(2);
+              subTotal =(parseInt(qtde)*10.44);
+              subFormat = subTotal.toFixed(2);
+              break;
+
+      }
+
+      var codNode = document.createTextNode(cod);
+      var descricaoNode = document.createTextNode(descricao);
+      var precoNode = document.createTextNode(preco);
+      var qtdeNode = document.createTextNode(qtde);
+      var subNode = document.createTextNode(subFormat);
+
+      td1.appendChild(codNode);
+      td2.appendChild(descricaoNode);
+      td3.appendChild(precoNode);
+      td4.appendChild(qtdeNode);
+      td5.appendChild(subNode);
+
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      tr.appendChild(td3);
+      tr.appendChild(td4);
+      tr.appendChild(td5);
+
+      tabela.appendChild(tr);
+
+      document.getElementById("codLivro").value = "";
+      document.getElementById("numQuantidadeLivro").value = '';
+
+      document.getElementById("codLivro").focus();
+
+      document.getElementById("txtSubTotal").value = subFormat2
+      document.getElementById("txtSubTotalResult").value = subFormat2
+      somaFinal = subTotal2+entrega;
+      document.getElementById("txtValorTotalResult").value = somaFinal.toFixed(2);
+
+  }
+      
+      
+      
+      
+      
+      </script>
+        
+        
+    </head>
+  
+
+    
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <body>
+    <div class="back"></div>
+
+        <div class="nulo" style="background-color: white";>
+        
+<nav>
+    
+  <a href="index.html">Home</a>
+  <a href="produtos.html">Produtos</a>
+  <a href="quemSomos.html">Quem Somos</a>
+  <a href="compreAqui.html">Compre Aqui</a>
+  <a href="faleConosco.html">Fale Conosco</a>
+</nav>
+        </div>    
+           
+        <br>
+        
+        <div class="nada"> 
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="imagens/Banner1.png" alt="Primeiro Slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="imagens/Banner8.png" alt="Segundo Slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="imagens/Banner10.png" alt="Terceiro Slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Anterior</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Próximo</span>
+  </a>
+</div>
+
+            </div>
+            
+        <div class="opa">
+        
+   
+        
+       
+        <div style="width: 60%; background: #040010b5; margin-top: 5%; margin-bottom: 5%; margin-left: 19%;">
+        
+        <form name="formVenda" style="width: 70%; margin-left: 15%; padding-top: 3%;">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4" style="color: white;">Nome Completo</label>
+      <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Nome">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4" style="color: white;">CPF</label>
+      <input type="text" class="form-control" id="txtCpf" name="txtCpf" placeholder="CPF" onkeydown="javascript: fMasc( this, mCPF );">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputAddress" style="color: white;">Email</label>
+    <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Email">
+  </div>
+
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-2 pt-0" style="color: white;">Como deseja retirar</legend>
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="rdEntrega" id="rdEntrega" value="1" checked>
+          <label class="form-check-label" for="rdEntrega" style="color: white;">
+            Correio - Entrega em 15 dias úteis (R$ 7,00) 
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="rdEntrega" id="rdEntrega" value="2">
+          <label class="form-check-label" for="rdEntrega" style="color: white;">
+            SEDEX - Entrega em 7 dias úteis (R$ 15,00)
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="rdEntrega" id="rdEntrega" value="3">
+          <label class="form-check-label" for="rdEntrega" style="color: white;">
+            Á retirar - Retirar no Endereço enviado ao seu Email (Sem frete)
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  
+  <div class="form-row">
+    
+    <div class="form-group col-md-2">
+      <label for="inputZip" style="color: white;">Código</label>
+      <input type="number" class="form-control" id="codLivro" name="codLivro">
+    </div>
+      
+    <div class="form-group col-md-2">
+      <label for="inputZip" style="color: white;">Quantidade</label>
+      <input type="number" class="form-control" id="numQuantidadeLivro" name="numQuantidadeLivro">
+    </div>
+      
+      <div>
+      <label for="inputZip">.</label>
+      <input type="button" class="form-control" value="Add" onclick="addProduto()">
+    </div>
+            </div>
+      
+           
+     
+      <br>
+      <br>
+    <table border="1" id="tbProduto" name="tbProduto" style="margin-left: 3.5%; background: white;">
+        <thead>
+            <tr>
+              <th>Código</th>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Quantidade</th>
+              <th>SubTotal</th>
+            </tr>
+        </thead>
+    </table>
+      
+      <br>
+      <br>
+      
+      
+        
+  
+            
+  
+</form>
+            
+            
+            
+            <form name="formVenda2" style="width: 70%; margin-left: 15%;">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4" style="color: white;">Sub Total</label>
+      <input type="text" class="form-control" id="txtSubTotal" name="txtSubTotal" readonly="readonly">
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="form-row">
+    
+    <div class="form-group col-md-4">
+      <label for="inputState" style="color: white;">Forma de Pagamento</label>
+      <select id="slcFormaPagto" name="slcFormaPagto" class="form-control">
+        <option value="1">Boleto</option>
+        <option value="2">Transferência</option>
+        <option value="3">Crédito</option>
+      </select>
+    </div>
+      
+      <div class="form-group col-md-4">
+      <label for="inputState" style="color: white;">Parcelas</label>
+      <select id="slcParcelas" name="slcParcelas" class="form-control">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+      </select>
+    </div>
+    
+  </div>
+  
+  <div class="form-row">
+        <div>
+        <input type="button" class="form-control" value="Cadastrar" onclick="salvar()">
+      </div>
+      </div>
+      
+
+      
+      </form>
+        
+        
+        
+        
+        
+        
+        <h1 style="height: 15%; background: #FFFFFF; padding-top: 2.5%; text-align: center;">Resumo da compra</h1>
+        
+        
+        <div style="width: 100%; background: #04001000; margin-top: 5%; margin-bottom: 5%;">
+        
+        <form name="formVenda3" style="width: 70%; margin-left: 15%;">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4" style="color: white;">Cliente</label>
+      <input type="text" class="form-control" id="txtNomeCliente" name="txtNomeCliente" readonly="readonly">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4" style="color: white;">CPF</label>
+      <input type="text" class="form-control" id="txtCpfResult" name="txtCpfResult" readonly="readonly">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputAddress" style="color: white;">Email</label>
+    <input type="email" class="form-control" id="txtEmailResult" name="txtEmail" readonly="readonly">
+  </div>
+  
+  <div class="form-row">
+    
+    
+      
+      
+      
+  </div>
+  
+            
+  
+</form>
+            
+            
+            
+            <form name="formVenda4" style="width: 70%; margin-left: 15%;">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4" style="color: white;">Sub Total</label>
+      <input type="text" class="form-control" id="txtSubTotalResult" name="txtSubTotalResult" readonly="readonly">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4" style="color: white;">Despesas de Envio</label>
+      <input type="text" class="form-control" id="txtDespesas" name="txtDespesas" readonly="readonly">
+    </div>
+  </div>
+                
+                 <div class="form-row">
+                     
+                     <div class="form-group col-md-4">
+      <label for="inputState" style="color: white;">Entrega Selecionada</label>
+      <input type="text" id="txtEntregaSelec" name="txtEntregaSelec" class="form-control" readonly="readonly"> 
+     
+    </div>
+    
+    <div class="form-group col-md-4">
+      <label for="inputState" style="color: white;">Pagamento Selecionado</label>
+     <input type="text" id="txtPagamentoSelec" name="txtPagamentoSelec" class="form-control" readonly="readonly">
+    </div>
+      
+      <div class="form-group col-md-4">
+      <label for="inputState" style="color: white;">Quantidade de Parcelas</label>
+      <input type="text" id="txtQuantidadeParcelas" name="txtQuantidadeParcelas" class="form-control" readonly="readonly">
+    </div>
+    
+  </div>
+
+  <div class="form-row" style="margin-left: 20%;">
+
+    <div class="form-group col-md-4">
+      <label for="inputState" style="color: white;">Valor por Parcela</label>
+      <input type="text" id="txtPagamentoParcela" name="txtPagamentoParcela" class="form-control" readonly="readonly">
+    </div>
+
+    <div class="form-group col-md-4">
+      <label for="inputState" style="color: white;">Valor Total</label>
+      <input type="text" id="txtValorTotalResult" name="txtValorTotalResult" class="form-control" readonly="readonly">
+    </div>
+
+  </div>
+
+  
+  <div class="form-row" style="margin-top: 5%;">
+    
+    <div>
+      <button type="reset" style="background: #35acda;" onclick="cancelar()">Cancelar</button>
+    </div>
+      
+      <div class="form-group col-md-4">
+      <button type="submit" style="background: #35acda;" onclick="finalizar()">Finalizar</button>
+    </div>
+    
+  </div>   
+                
+  
+
+</form>
+        
+        </div>   
+        </div>
+        </div>
+        
+        
+        
+ 
+</body>
+
+</html>
